@@ -1,0 +1,23 @@
+load(":rules.bzl", "exec_with_library_dep", "apply_transition")
+
+proto_library(
+    name = "proto",
+    srcs = ["empty.proto"],
+    deps = [],
+)
+
+cc_proto_library(
+    name = "cc_proto",
+    deps = [":proto"],
+)
+
+apply_transition(
+    name = "cc_proto_with_transition",
+    native_target = ":cc_proto",
+)
+
+exec_with_library_dep(
+    name = "error",
+    out = "dummy.gen",
+    library = ":cc_proto_with_transition",
+)
